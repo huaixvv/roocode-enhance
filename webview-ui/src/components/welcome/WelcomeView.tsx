@@ -21,7 +21,7 @@ const WelcomeView = () => {
 	useEffect(() => {
 		// 设置默认配置并自动保存，无论是否已有配置
 		const defaultConfig = {
-			apiProvider: "vscode-lm" as const, // "openai" 对应 UI 中的 "OpenAI Compatible",
+			apiProvider: "vscode-lm" as const,
 			apiModelId: "copilot/claude-3.5-sonnet",
 			vsCodeLmModelSelector: { vendor: "copilot", family: "claude-3.5-sonnet" },
 		} as ApiConfiguration
