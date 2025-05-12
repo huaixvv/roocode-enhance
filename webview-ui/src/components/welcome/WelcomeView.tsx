@@ -19,7 +19,7 @@ const WelcomeView = () => {
 	const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
 
 	useEffect(() => {
-		// 设置默认配置并自动保存，无论是否已有配置
+		// 设置默认配置并自动保存，无论是否已有配置,暂时设置cluade3.5
 		const defaultConfig = {
 			apiProvider: "vscode-lm" as const,
 			apiModelId: "copilot/claude-3.5-sonnet",
