@@ -151,7 +151,7 @@ Roo Code — это проект, управляемый сообществом,
 
 ```sh
 npm run build
-code --install-extension bin/roo-cline-<версия>.vsix
+code --install-extension bin/paypal-roocode-enhance-<версия>.vsix
 ```
 
 (Замени `<версия>` на фактический номер версии сгенерированного файла).
