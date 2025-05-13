@@ -151,7 +151,7 @@ Hoặc, để build và cài đặt gói `.vsix`:
 
 ```sh
 npm run build
-code --install-extension bin/roo-cline-<phiên-bản>.vsix
+code --install-extension bin/paypal-roocode-enhance-<phiên-bản>.vsix
 ```
 
 (Thay `<phiên-bản>` bằng số phiên bản thực tế của file đã build.)

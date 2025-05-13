@@ -4,9 +4,9 @@ import { Terminal } from "../integrations/terminal/Terminal"
 import { t } from "../i18n"
 
 const TERMINAL_COMMAND_IDS = {
-	ADD_TO_CONTEXT: "roo-cline.terminalAddToContext",
-	FIX: "roo-cline.terminalFixCommand",
-	EXPLAIN: "roo-cline.terminalExplainCommand",
+	ADD_TO_CONTEXT: "paypal-roocode-enhance.terminalAddToContext",
+	FIX: "paypal-roocode-enhance.terminalFixCommand",
+	EXPLAIN: "paypal-roocode-enhance.terminalExplainCommand",
 } as const
 
 export const registerTerminalActions = (context: vscode.ExtensionContext) => {
