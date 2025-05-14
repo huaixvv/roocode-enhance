@@ -69,6 +69,7 @@ export interface ExtensionMessage {
 		| "setHistoryPreviewCollapsed"
 		| "commandExecutionStatus"
 		| "vsCodeSetting"
+		| "mcpServerInstalled"
 	text?: string
 	action?:
 		| "chatButtonClicked"
@@ -107,6 +108,7 @@ export interface ExtensionMessage {
 	error?: string
 	setting?: string
 	value?: any
+	serverName?: string
 }
 
 export type ExtensionState = Pick<
