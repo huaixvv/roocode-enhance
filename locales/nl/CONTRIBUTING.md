@@ -151,7 +151,7 @@ Je kunt ook een `.vsix`-pakket bouwen en installeren:
 
 ```sh
 npm run build
-code --install-extension bin/roo-cline-<versie>.vsix
+code --install-extension bin/paypal-roocode-enhance-<versie>.vsix
 ```
 
 (Vervang `<versie>` door het daadwerkelijke versienummer van het gegenereerde bestand.)

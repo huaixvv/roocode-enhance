@@ -151,7 +151,7 @@ webview(`webview-ui`) 변경은 Hot Module Replacement로 즉시 반영됩니다
 
 ```sh
 npm run build
-code --install-extension bin/roo-cline-<version>.vsix
+code --install-extension bin/paypal-roocode-enhance-<version>.vsix
 ```
 
 (`<version>`은 빌드된 파일의 실제 버전 번호로 대체)

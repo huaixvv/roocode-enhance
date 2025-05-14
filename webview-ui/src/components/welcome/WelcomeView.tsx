@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useState, useEffect } from "react"
 import { VSCodeButton, VSCodeLink } from "@vscode/webview-ui-toolkit/react"
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { validateApiConfiguration } from "@src/utils/validate"
@@ -10,11 +10,35 @@ import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { getRequestyAuthUrl, getOpenRouterAuthUrl } from "@src/oauth/urls"
 import RooHero from "./RooHero"
 import knuthShuffle from "knuth-shuffle-seeded"
+import { ApiConfiguration } from "../../../../src/shared/api"
+import { TelemetrySetting } from "../../../../src/shared/TelemetrySetting"
 
 const WelcomeView = () => {
 	const { apiConfiguration, currentApiConfigName, setApiConfiguration, uriScheme, machineId } = useExtensionState()
 	const { t } = useAppTranslation()
 	const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
+
+	useEffect(() => {
+		// 设置默认配置并自动保存，无论是否已有配置,暂时设置cluade3.5
+		const defaultConfig = {
+			apiProvider: "vscode-lm" as const,
+			apiModelId: "copilot/claude-3.5-sonnet",
+			vsCodeLmModelSelector: { vendor: "copilot", family: "claude-3.5-sonnet" },
+		} as ApiConfiguration
+
+		// 设置默认配置
+		setApiConfiguration(defaultConfig)
+
+		// 延迟一点时间后自动提交，确保状态已更新
+		setTimeout(() => {
+			vscode.postMessage({
+				type: "upsertApiConfiguration",
+				text: currentApiConfigName || "default",
+				apiConfiguration: defaultConfig,
+			})
+			vscode.postMessage({ type: "telemetrySetting", text: "disabled" satisfies TelemetrySetting })
+		}, 500)
+	}, [currentApiConfigName, setApiConfiguration]) // 移除 apiConfiguration 依赖，确保每次都设置默认值
 
 	const handleSubmit = useCallback(() => {
 		const error = apiConfiguration ? validateApiConfiguration(apiConfiguration) : undefined

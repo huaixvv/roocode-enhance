@@ -1,5 +1,5 @@
 export function getCallbackUrl(provider: string, uriScheme?: string) {
-	return encodeURIComponent(`${uriScheme || "vscode"}://rooveterinaryinc.roo-cline/${provider}`)
+	return encodeURIComponent(`${uriScheme || "vscode"}://PayPalIntegrate.paypal-roocode-enhance/${provider}`)
 }
 
 export function getGlamaAuthUrl(uriScheme?: string) {
