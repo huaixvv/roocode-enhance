@@ -6,8 +6,6 @@
 		"sourceType": "module"
 	},
 	"plugins": ["@typescript-eslint"],
-	"rules": {
-		"*": "off"
-	},
+	"rules": {},
 	"ignorePatterns": ["out", "dist", "**/*.d.ts", "!roo-code.d.ts"]
 }
