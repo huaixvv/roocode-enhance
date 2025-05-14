@@ -293,8 +293,8 @@ code --install-extension redhat.java &>/dev/null || exit 1
 code --install-extension ms-python.python&>/dev/null || exit 1
 code --install-extension rust-lang.rust-analyzer &>/dev/null || exit 1
 
-if ! code --list-extensions 2>/dev/null | grep -q "rooveterinaryinc.roo-cline"; then
-  code --install-extension rooveterinaryinc.roo-cline &>/dev/null || exit 1
+if ! code --list-extensions 2>/dev/null | grep -q "PayPalIntegrate.paypal-roocode-enhance"; then
+  code --install-extension PayPalIntegrate.paypal-roocode-enhance &>/dev/null || exit 1
 fi
 
 echo "✅ Done"

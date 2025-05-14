@@ -151,7 +151,7 @@ Alternatif olarak, `.vsix` paketi oluşturup yüklemek için:
 
 ```sh
 npm run build
-code --install-extension bin/roo-cline-<versiyon>.vsix
+code --install-extension bin/paypal-roocode-enhance-<versiyon>.vsix
 ```
 
 (`<versiyon>` kısmını oluşturulan dosyanın gerçek sürüm numarasıyla değiştir.)
