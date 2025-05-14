@@ -1252,6 +1252,74 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 				}
 			}
 			break
+		case "installMcpServer":
+			if (message.serverName && message.serverConfig) {
+				try {
+					// 获取MCP设置文件路径
+					const mcpSettingsFilePath = await provider.getMcpHub()?.getMcpSettingsFilePath()
+					if (!mcpSettingsFilePath) {
+						throw new Error("无法获取MCP设置文件路径")
+					}
+					
+					// 读取现有配置或创建新配置
+					let config: { mcpServers: Record<string, any> } = { mcpServers: {} }
+					try {
+						const content = await fs.readFile(mcpSettingsFilePath, "utf-8")
+						config = JSON.parse(content)
+						if (!config.mcpServers) config.mcpServers = {}
+					} catch (e) {
+						// 文件不存在或解析失败，使用默认配置
+					}
+					
+					// 添加新服务配置
+					config.mcpServers[message.serverName] = message.serverConfig
+					
+					// 写入文件
+					await fs.writeFile(mcpSettingsFilePath, JSON.stringify(config, null, 2), 'utf8')
+					
+					// 重新初始化MCP服务
+					const mcpHub = provider.getMcpHub()
+					if (mcpHub) {
+						await mcpHub.reinitializeMcpServers("global")
+						
+						// 获取更新后的服务列表
+						const allServers = mcpHub.getAllServers() || []
+						
+						// 通知前端更新服务列表
+						provider.postMessageToWebview({
+							type: "mcpServers",
+							mcpServers: allServers
+						})
+					}
+					
+					// 通知前端安装成功
+					provider.postMessageToWebview({
+						type: "mcpServerInstalled",
+						serverName: message.serverName,
+						success: true
+					})
+					
+				} catch (error) {
+					const errorMessage = error instanceof Error ? error.message : String(error)
+					
+					// 通知前端安装失败
+					provider.postMessageToWebview({
+						type: "mcpServerInstalled",
+						serverName: message.serverName || "未知服务",
+						success: false,
+						error: errorMessage
+					})
+				}
+			} else {
+				// 缺少必要参数
+				provider.postMessageToWebview({
+					type: "mcpServerInstalled",
+					serverName: message.serverName || "未知服务",
+					success: false,
+					error: "缺少必要参数"
+				})
+			}
+			break
 		case "updateCustomMode":
 			if (message.modeConfig) {
 				await provider.customModesManager.updateCustomMode(message.modeConfig.slug, message.modeConfig)
@@ -1305,6 +1373,67 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 			const isOptedIn = telemetrySetting === "enabled"
 			telemetryService.updateTelemetryState(isOptedIn)
 			await provider.postStateToWebview()
+			break
+		}
+		case "getMcpServers":
+			const mcpServers = provider.getMcpHub()?.getAllServers() || []
+			provider.postMessageToWebview({
+				type: "mcpServers",
+				mcpServers
+			})
+			break
+		case "saveMcpSettingsContent": {
+			if (!message.text) {
+				provider.postMessageToWebview({
+					type: "mcpSettingsContent",
+					text: JSON.stringify({ error: "No content provided" }, null, 2)
+				})
+				return
+			}
+
+			try {
+				// 验证JSON格式
+				const configData = JSON.parse(message.text)
+				
+				// 获取MCP设置文件路径
+				const mcpSettingsFilePath = await provider.getMcpHub()?.getMcpSettingsFilePath()
+				if (!mcpSettingsFilePath) {
+					throw new Error("无法获取MCP设置文件路径")
+				}
+				
+				// 直接写入文件
+				await fs.writeFile(mcpSettingsFilePath, message.text, 'utf8')
+				
+				// 重新初始化MCP服务
+				const mcpHub = provider.getMcpHub()
+				if (mcpHub) {
+					await mcpHub.reinitializeMcpServers("global")
+					
+					// 获取更新后的服务列表
+					const allServers = mcpHub.getAllServers() || []
+					
+					// 通知前端更新服务列表
+					provider.postMessageToWebview({
+						type: "mcpServers",
+						mcpServers: allServers
+					})
+				}
+				
+				// 发送成功消息
+				provider.postMessageToWebview({
+					type: "mcpSettingsContent",
+					text: JSON.stringify({ success: true, message: "MCP设置已保存并重新初始化服务器" }, null, 2)
+				})
+			} catch (error) {
+				const errorMessage = error instanceof Error ? error.message : String(error)
+				
+				// 发送错误消息
+				provider.postMessageToWebview({
+					type: "mcpSettingsContent",
+					text: JSON.stringify({ error: `保存或初始化失败: ${errorMessage}` }, null, 2)
+				})
+			}
+			
 			break
 		}
 	}

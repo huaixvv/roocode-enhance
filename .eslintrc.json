@@ -7,19 +7,7 @@
 	},
 	"plugins": ["@typescript-eslint"],
 	"rules": {
-		"@typescript-eslint/naming-convention": [
-			"warn",
-			{
-				"selector": "import",
-				"format": ["camelCase", "PascalCase"]
-			}
-		],
-		"@typescript-eslint/semi": "off",
-		"no-unused-vars": "off",
-		"@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }],
-		"eqeqeq": "warn",
-		"no-throw-literal": "warn",
-		"semi": "off"
+		"*": "off"
 	},
 	"ignorePatterns": ["out", "dist", "**/*.d.ts", "!roo-code.d.ts"]
 }

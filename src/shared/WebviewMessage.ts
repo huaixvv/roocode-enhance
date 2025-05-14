@@ -131,6 +131,12 @@ export interface WebviewMessage {
 		| "searchFiles"
 		| "toggleApiConfigPin"
 		| "setHistoryPreviewCollapsed"
+		| "installMcpServer"
+		| "mcpServerInstalled"
+		| "getMcpServers"
+		| "mcpServers"
+		| "mcpSettingsContent"
+		| "saveMcpSettingsContent"
 	text?: string
 	disabled?: boolean
 	askResponse?: ClineAskResponse
@@ -141,6 +147,7 @@ export interface WebviewMessage {
 	commands?: string[]
 	audioType?: AudioType
 	serverName?: string
+	serverConfig?: Record<string, any>
 	toolName?: string
 	alwaysAllow?: boolean
 	mode?: Mode
