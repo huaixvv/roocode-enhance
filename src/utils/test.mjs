@@ -1,7 +1,6 @@
 import OpenAI from "openai"
 
-// const token = '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';
-const token = "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"
+const token = ""
 
 const endpoint = "https://models.github.ai/inference"
 const model = "openai/gpt-4.1"
