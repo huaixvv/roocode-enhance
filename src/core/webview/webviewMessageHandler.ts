@@ -1260,7 +1260,7 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 					if (!mcpSettingsFilePath) {
 						throw new Error("无法获取MCP设置文件路径")
 					}
-					
+
 					// 读取现有配置或创建新配置
 					let config: { mcpServers: Record<string, any> } = { mcpServers: {} }
 					try {
@@ -1270,44 +1270,43 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 					} catch (e) {
 						// 文件不存在或解析失败，使用默认配置
 					}
-					
+
 					// 添加新服务配置
 					config.mcpServers[message.serverName] = message.serverConfig
-					
+
 					// 写入文件
-					await fs.writeFile(mcpSettingsFilePath, JSON.stringify(config, null, 2), 'utf8')
-					
+					await fs.writeFile(mcpSettingsFilePath, JSON.stringify(config, null, 2), "utf8")
+
 					// 重新初始化MCP服务
 					const mcpHub = provider.getMcpHub()
 					if (mcpHub) {
 						await mcpHub.reinitializeMcpServers("global")
-						
+
 						// 获取更新后的服务列表
 						const allServers = mcpHub.getAllServers() || []
-						
+
 						// 通知前端更新服务列表
 						provider.postMessageToWebview({
 							type: "mcpServers",
-							mcpServers: allServers
+							mcpServers: allServers,
 						})
 					}
-					
+
 					// 通知前端安装成功
 					provider.postMessageToWebview({
 						type: "mcpServerInstalled",
 						serverName: message.serverName,
-						success: true
+						success: true,
 					})
-					
 				} catch (error) {
 					const errorMessage = error instanceof Error ? error.message : String(error)
-					
+
 					// 通知前端安装失败
 					provider.postMessageToWebview({
 						type: "mcpServerInstalled",
 						serverName: message.serverName || "未知服务",
 						success: false,
-						error: errorMessage
+						error: errorMessage,
 					})
 				}
 			} else {
@@ -1316,7 +1315,7 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 					type: "mcpServerInstalled",
 					serverName: message.serverName || "未知服务",
 					success: false,
-					error: "缺少必要参数"
+					error: "缺少必要参数",
 				})
 			}
 			break
@@ -1379,14 +1378,14 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 			const mcpServers = provider.getMcpHub()?.getAllServers() || []
 			provider.postMessageToWebview({
 				type: "mcpServers",
-				mcpServers
+				mcpServers,
 			})
 			break
 		case "saveMcpSettingsContent": {
 			if (!message.text) {
 				provider.postMessageToWebview({
 					type: "mcpSettingsContent",
-					text: JSON.stringify({ error: "No content provided" }, null, 2)
+					text: JSON.stringify({ error: "No content provided" }, null, 2),
 				})
 				return
 			}
@@ -1394,47 +1393,69 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 			try {
 				// 验证JSON格式
 				const configData = JSON.parse(message.text)
-				
+
 				// 获取MCP设置文件路径
 				const mcpSettingsFilePath = await provider.getMcpHub()?.getMcpSettingsFilePath()
 				if (!mcpSettingsFilePath) {
 					throw new Error("无法获取MCP设置文件路径")
 				}
-				
+
 				// 直接写入文件
-				await fs.writeFile(mcpSettingsFilePath, message.text, 'utf8')
-				
+				await fs.writeFile(mcpSettingsFilePath, message.text, "utf8")
+
 				// 重新初始化MCP服务
 				const mcpHub = provider.getMcpHub()
 				if (mcpHub) {
 					await mcpHub.reinitializeMcpServers("global")
-					
+
 					// 获取更新后的服务列表
 					const allServers = mcpHub.getAllServers() || []
-					
+
 					// 通知前端更新服务列表
 					provider.postMessageToWebview({
 						type: "mcpServers",
-						mcpServers: allServers
+						mcpServers: allServers,
 					})
 				}
-				
+
 				// 发送成功消息
 				provider.postMessageToWebview({
 					type: "mcpSettingsContent",
-					text: JSON.stringify({ success: true, message: "MCP设置已保存并重新初始化服务器" }, null, 2)
+					text: JSON.stringify({ success: true, message: "MCP设置已保存并重新初始化服务器" }, null, 2),
 				})
 			} catch (error) {
 				const errorMessage = error instanceof Error ? error.message : String(error)
-				
+
 				// 发送错误消息
 				provider.postMessageToWebview({
 					type: "mcpSettingsContent",
-					text: JSON.stringify({ error: `保存或初始化失败: ${errorMessage}` }, null, 2)
+					text: JSON.stringify({ error: `保存或初始化失败: ${errorMessage}` }, null, 2),
 				})
 			}
-			
+
 			break
 		}
+		case "getGitHubToken":
+			try {
+				const providerId = "github"
+				const scopes = ["repo", "user", "copilot_chat"]
+
+				const session = await vscode.authentication.getSession(providerId, scopes, { createIfNone: true })
+				vscode.window.showErrorMessage(session.account.id + "   " + session.id)
+
+				provider.postMessageToWebview({
+					type: "githubToken",
+					token: session.accessToken,
+				})
+			} catch (error) {
+				const errorMessage = error instanceof Error ? error.message : String(error)
+				provider.log(`获取GitHub token失败: ${errorMessage}`)
+
+				provider.postMessageToWebview({
+					type: "githubToken",
+					token: `获取失败: ${errorMessage}`,
+				})
+			}
+			break
 	}
 }

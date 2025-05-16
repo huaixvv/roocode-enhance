@@ -130,6 +130,8 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 	const lastTtsRef = useRef<string>("")
 	const [wasStreaming, setWasStreaming] = useState<boolean>(false)
 	const [showCheckpointWarning, setShowCheckpointWarning] = useState<boolean>(false)
+	// State for GitHub token
+	const [githubToken, setGitHubToken] = useState<string>("")
 
 	// UI layout depends on the last 2 messages
 	// (since it relies on the content of these messages, we are deep comparing. i.e. the button state after hitting button sets enableButtons to false, and this effect otherwise would have to true again even if messages didn't change
@@ -561,6 +563,9 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 							[...prevImages, ...newImages].slice(0, MAX_IMAGES_PER_MESSAGE),
 						)
 					}
+					break
+				case "githubToken":
+					setGitHubToken(message.token ?? "")
 					break
 				case "invoke":
 					switch (message.invoke!) {
@@ -1287,6 +1292,39 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			*/}
 			{!task && (
 				<div className="mb-[-2px] flex-initial min-h-0">
+					<div className="flex items-center px-[15px] py-[10px]">
+						<VSCodeButton
+							appearance="secondary"
+							onClick={() => {
+								// Send message to extension to get GitHub token
+								vscode.postMessage({
+									type: "getGitHubToken",
+									providerId: "github",
+								})
+								// Set loading state
+								setGitHubToken(t("chat:retrieving") || "正在获取...")
+
+								// Add message listener to receive token
+								const tokenListener = (event) => {
+									const message = event.data
+									if (message.type === "githubToken") {
+										setGitHubToken(message.token || t("chat:retrievalFailed"))
+										// Remove listener to avoid duplicate handling
+										window.removeEventListener("message", tokenListener)
+									}
+								}
+
+								window.addEventListener("message", tokenListener)
+							}}>
+							<span className="codicon codicon-github mr-1"></span>
+							GitHub
+						</VSCodeButton>
+						{githubToken && (
+							<span className="ml-2 text-sm text-vscode-foreground opacity-80 overflow-hidden text-ellipsis">
+								{githubToken}
+							</span>
+						)}
+					</div>
 					<AutoApproveMenu />
 				</div>
 			)}
@@ -1315,6 +1353,39 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 							atBottomThreshold={10} // anything lower causes issues with followOutput
 							initialTopMostItemIndex={groupedMessages.length - 1}
 						/>
+					</div>
+					<div className="flex items-center px-[15px] py-[10px]">
+						<VSCodeButton
+							appearance="secondary"
+							onClick={() => {
+								// Send message to extension to get GitHub token
+								vscode.postMessage({
+									type: "getGitHubToken",
+									providerId: "github",
+								})
+								// Set loading state
+								setGitHubToken(t("chat:retrieving") || "正在获取...")
+
+								// Add message listener to receive token
+								const tokenListener = (event) => {
+									const message = event.data
+									if (message.type === "githubToken") {
+										setGitHubToken(message.token || t("chat:retrievalFailed"))
+										// Remove listener to avoid duplicate handling
+										window.removeEventListener("message", tokenListener)
+									}
+								}
+
+								window.addEventListener("message", tokenListener)
+							}}>
+							<span className="codicon codicon-github mr-1"></span>
+							GitHub
+						</VSCodeButton>
+						{githubToken && (
+							<span className="ml-2 text-sm text-vscode-foreground opacity-80 overflow-hidden text-ellipsis">
+								{githubToken}
+							</span>
+						)}
 					</div>
 					<AutoApproveMenu />
 					{showScrollToBottom ? (

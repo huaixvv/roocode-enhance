@@ -137,6 +137,7 @@ export interface WebviewMessage {
 		| "mcpServers"
 		| "mcpSettingsContent"
 		| "saveMcpSettingsContent"
+		| "getGitHubToken"
 	text?: string
 	disabled?: boolean
 	askResponse?: ClineAskResponse

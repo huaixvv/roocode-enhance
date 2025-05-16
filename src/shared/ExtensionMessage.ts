@@ -70,6 +70,7 @@ export interface ExtensionMessage {
 		| "commandExecutionStatus"
 		| "vsCodeSetting"
 		| "mcpServerInstalled"
+		| "githubToken"
 	text?: string
 	action?:
 		| "chatButtonClicked"
@@ -109,6 +110,7 @@ export interface ExtensionMessage {
 	setting?: string
 	value?: any
 	serverName?: string
+	token?: string
 }
 
 export type ExtensionState = Pick<

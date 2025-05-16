@@ -1,0 +1,27 @@
+import OpenAI from "openai"
+
+// const token = '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';
+const token = "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"
+
+const endpoint = "https://models.github.ai/inference"
+const model = "openai/gpt-4.1"
+
+export async function main() {
+	const client = new OpenAI({ baseURL: endpoint, apiKey: token })
+
+	const response = await client.chat.completions.create({
+		messages: [
+			{ role: "system", content: "You are a helpful assistant." },
+			{ role: "user", content: "今天上海天气" },
+		],
+		temperature: 1.0,
+		top_p: 1.0,
+		model: model,
+	})
+
+	console.log(response.choices[0].message.content)
+}
+
+main().catch((err) => {
+	console.error("The sample encountered an error:", err)
+})
