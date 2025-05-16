@@ -1,12 +1,12 @@
 import OpenAI from "openai"
 
-const token = ""
+const aa = "  "
 
 const endpoint = "https://models.github.ai/inference"
 const model = "openai/gpt-4.1"
 
 export async function main() {
-	const client = new OpenAI({ baseURL: endpoint, apiKey: token })
+	const client = new OpenAI({ baseURL: endpoint, apiKey: aa })
 
 	const response = await client.chat.completions.create({
 		messages: [
