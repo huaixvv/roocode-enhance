@@ -293,7 +293,7 @@ const McpMarketplace = () => {
 			addDebugInfo(`开始安装 ${item.name}...`)
 
 			// 解析安装配置
-			const installConfig = JSON.parse(item.install)
+			const installConfig = JSON.parse(item.run_script)
 			
 			// 获取服务名称和配置
 			const serverName = Object.keys(installConfig.mcpServers)[0]

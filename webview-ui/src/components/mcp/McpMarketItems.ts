@@ -3,7 +3,7 @@ export type McpMarketItem = {
 	name: string
 	description: string
 	icon: string
-	install: string
+	run_script: string
 }
 
 // MCP Marketplace 数据
@@ -12,7 +12,7 @@ export const mcpMarketItems: McpMarketItem[] = [
 		name: "file-system",
 		description: "Filesystem MCP Server is a npm-based server that implements the Model Context Protocol (MCP).",
 		icon: "🧠",
-		install: `{
+		run_script: `{
       "mcpServers": {
         "file-system": {
           "command": "npx",
@@ -31,7 +31,7 @@ export const mcpMarketItems: McpMarketItem[] = [
 		name: "playwright",
 		description: "Playwright MCP is a Model Context Protocol server that provides browser",
 		icon: "🌐",
-		install: `{
+		run_script: `{
       "mcpServers": {
         "playwright": {
           "command": "npx",
@@ -48,7 +48,7 @@ export const mcpMarketItems: McpMarketItem[] = [
 		name: "github",
 		description: "GitHub MCP Server is a tool for managing GitHub repositories, enabling file operations",
 		icon: "🐙",
-		install: `{
+		run_script: `{
   "mcpServers": {
     "github": {
       "command": "docker",
