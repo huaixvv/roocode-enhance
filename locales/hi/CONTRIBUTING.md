@@ -151,7 +151,7 @@ Webview (`webview-ui`) में बदलाव तुरंत Hot Module Repl
 
 ```sh
 npm run build
-code --install-extension bin/roo-cline-<version>.vsix
+code --install-extension bin/paypal-roocode-enhance-<version>.vsix
 ```
 
 (`<version>` को बिल्ट फाइल के असली वर्शन नंबर से बदलें।)

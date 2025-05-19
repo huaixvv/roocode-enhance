@@ -151,7 +151,7 @@ webview（`webview-ui`）的更改会通过热更新（HMR）即时生效。核�
 
 ```sh
 npm run build
-code --install-extension bin/roo-cline-<版本号>.vsix
+code --install-extension bin/paypal-roocode-enhance-<版本号>.vsix
 ```
 
 （将 `<版本号>` 替换为实际生成的文件版本号）

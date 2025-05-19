@@ -1075,6 +1075,19 @@ export class McpHub {
 		}
 	}
 
+	/**
+	 * 重新初始化指定来源的MCP服务器
+	 * @param source 服务器来源，"global"或"project"
+	 */
+	public async reinitializeMcpServers(source: "global" | "project"): Promise<void> {
+		try {
+			await this.initializeMcpServers(source)
+		} catch (error) {
+			this.showErrorMessage(`Failed to reinitialize ${source} MCP servers`, error)
+			throw error
+		}
+	}
+
 	public async deleteServer(serverName: string, source?: "global" | "project"): Promise<void> {
 		try {
 			// Find the connection to determine if it's a global or project server

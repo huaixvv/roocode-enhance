@@ -69,7 +69,7 @@
 		"tooltip": "Cancel the current operation"
 	},
 	"scrollToBottom": "Scroll to bottom of chat",
-	"about": "Generate, refactor, and debug code with AI assistance.<br />Check out our <DocsLink>documentation</DocsLink> to learn more.",
+	"about": "Generate, refactor, and debug code with AI assistance.<br />",
 	"onboarding": "Your task list in this workspace is empty.",
 	"rooTips": {
 		"boomerangTasks": {
@@ -195,8 +195,8 @@
 		"description": "Auto-approve allows Roo Code to perform actions without asking for permission. Only enable for actions you fully trust. More detailed configuration available in <settingsLink>Settings</settingsLink>."
 	},
 	"announcement": {
-		"title": "🎉 Roo Code 3.16 Released",
-		"description": "Roo Code 3.16 brings new features and improvements based on your feedback.",
+		"title": "PayPal RooCode Enhance​​ ",
+		"description": "​​PayPal RooCode Enhance​​ extends Roo Code's capabilities by adding PayPal MCP Marketplace, allowing one-click installation of PayPal MCP services.",
 		"whatsNew": "What's New",
 		"feature1": "<bold>Groq and Chutes API Providers</bold>: Added support for Groq and Chutes API providers (thanks @shariqriazz!)",
 		"feature2": "<bold>Clickable Code References</bold>: Code references in model responses now navigate to source lines (thanks @KJ7LNW!)",

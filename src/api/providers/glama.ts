@@ -14,7 +14,9 @@ import { RouterProvider } from "./router-provider"
 const GLAMA_DEFAULT_TEMPERATURE = 0
 
 const DEFAULT_HEADERS = {
-	"X-Glama-Metadata": JSON.stringify({ labels: [{ key: "app", value: "vscode.rooveterinaryinc.roo-cline" }] }),
+	"X-Glama-Metadata": JSON.stringify({
+		labels: [{ key: "app", value: "vscode.PayPalIntegrate.paypal-roocode-enhance" }],
+	}),
 }
 
 export class GlamaHandler extends RouterProvider implements SingleCompletionHandler {
