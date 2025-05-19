@@ -30,79 +30,11 @@ import McpToolRow from "./McpToolRow"
 import McpResourceRow from "./McpResourceRow"
 import McpEnabledToggle from "./McpEnabledToggle"
 import { McpErrorRow } from "./McpErrorRow"
+import { McpMarketItem, mcpMarketItems } from "./McpMarketItems"
 
 type McpViewProps = {
 	onDone: () => void
 }
-
-// MCP Marketplace 数据类型
-type McpMarketItem = {
-	name: string
-	description: string
-	icon: string
-	install: string
-}
-
-// Mock 数据
-const mcpMarketItems: McpMarketItem[] = [
-	{
-		name: "file-system",
-		description: "Filesystem MCP Server is a npm-based server that implements the Model Context Protocol (MCP).",
-		icon: "🧠",
-		install: `{
-      "mcpServers": {
-        "file-system": {
-          "command": "npx",
-          "args": [
-            "-y",
-            "@modelcontextprotocol/server-filesystem",
-            "/Users/zhixuan/Desktop"
-          ],
-          "type": "stdio",
-          "autoApprove": ["all"]
-        }
-      }
-    }`,
-	},
-	{
-		name: "playwright",
-		description: "Playwright MCP is a Model Context Protocol server that provides browser",
-		icon: "🌐",
-		install: `{
-      "mcpServers": {
-        "playwright": {
-          "command": "npx",
-          "args": [
-            "@playwright/mcp@latest"
-          ],
-          "autoApprove": ["all"],
-          "type": "stdio"
-        }
-      }
-    }`,
-	},
-	{
-		name:"github",
-		description: "GitHub MCP Server is a tool for managing GitHub repositories, enabling file operations",
-		icon: "🐙",
-		install: `
-		{
-  "mcpServers": {
-    "github": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "<Your Github Access Token>"
-      }
-    }
-  }
-}
-		`
-	},
-]
 
 const McpView = ({ onDone }: McpViewProps) => {
 	const {
@@ -361,7 +293,7 @@ const McpMarketplace = () => {
 			addDebugInfo(`开始安装 ${item.name}...`)
 
 			// 解析安装配置
-			const installConfig = JSON.parse(item.install)
+			const installConfig = JSON.parse(item.run_script)
 			
 			// 获取服务名称和配置
 			const serverName = Object.keys(installConfig.mcpServers)[0]
